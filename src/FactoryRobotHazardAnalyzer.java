@@ -1,11 +1,17 @@
 import java.util.Scanner;
 
+/*
+ * Custom Exception Class
+ */
 class RobotSafetyException extends Exception {
     public RobotSafetyException(String message) {
         super(message);
     }
 }
 
+/*
+ * Auditor Class - Business Logic
+ */
 class RobotHazardAuditor {
 
     public double CalculateHazardRisk(
@@ -14,16 +20,19 @@ class RobotHazardAuditor {
             String machineryState)
             throws RobotSafetyException {
 
+        // Validate arm precision
         if (armPrecision < 0.0 || armPrecision > 1.0) {
             throw new RobotSafetyException(
-                "Error: Arm precision must be 0.0-1.0");
+                    "Error: Arm precision must be 0.0-1.0");
         }
 
+        // Validate worker density
         if (workerDensity < 1 || workerDensity > 20) {
             throw new RobotSafetyException(
-                "Error: Worker density must be 1-20");
+                    "Error: Worker density must be 1-20");
         }
 
+        // Determine machinery risk factor
         double machineRiskFactor;
 
         if (machineryState.equals("Worn")) {
@@ -34,14 +43,18 @@ class RobotHazardAuditor {
             machineRiskFactor = 3.0;
         } else {
             throw new RobotSafetyException(
-                "Error: Unsupported machinery state");
+                    "Error: Unsupported machinery state");
         }
 
+        // Hazard risk calculation
         return ((1.0 - armPrecision) * 15.0)
                 + (workerDensity * machineRiskFactor);
     }
 }
 
+/*
+ * Main Application Class
+ */
 public class FactoryRobotHazardAnalyzer {
 
     public static void main(String[] args) {
@@ -55,7 +68,7 @@ public class FactoryRobotHazardAnalyzer {
 
             System.out.println("Enter Worker Density (1 - 20):");
             int workerDensity = sc.nextInt();
-            sc.nextLine();
+            sc.nextLine(); // clear input buffer
 
             System.out.println("Enter Machinery State (Worn/Faulty/Critical):");
             String machineryState = sc.nextLine();
