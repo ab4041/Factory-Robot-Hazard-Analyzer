@@ -6,9 +6,9 @@ class RobotSafetyException extends Exception {
     }
 }
 
-public class FactoryRobotHazardAnalyzer {
+class RobotHazardAuditor {
 
-    public static double calculateHazardRisk(
+    public double CalculateHazardRisk(
             double armPrecision,
             int workerDensity,
             String machineryState)
@@ -40,10 +40,14 @@ public class FactoryRobotHazardAnalyzer {
         return ((1.0 - armPrecision) * 15.0)
                 + (workerDensity * machineRiskFactor);
     }
+}
+
+public class FactoryRobotHazardAnalyzer {
 
     public static void main(String[] args) {
 
         Scanner sc = new Scanner(System.in);
+        RobotHazardAuditor auditor = new RobotHazardAuditor();
 
         try {
             System.out.println("Enter Arm Precision (0.0 - 1.0):");
@@ -56,7 +60,7 @@ public class FactoryRobotHazardAnalyzer {
             System.out.println("Enter Machinery State (Worn/Faulty/Critical):");
             String machineryState = sc.nextLine();
 
-            double risk = calculateHazardRisk(
+            double risk = auditor.CalculateHazardRisk(
                     armPrecision, workerDensity, machineryState);
 
             System.out.println("Robot Hazard Risk Score: " + risk);
